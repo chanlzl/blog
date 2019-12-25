@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzl.blog.dao.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.lzl.blog.entity.vo.ArticleVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="read_count" jdbcType="INTEGER" property="readCount" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="is_essence" jdbcType="BIT" property="isEssence" />
+    <result column="is_top" jdbcType="BIT" property="isTop" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="content"  property="content" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, user_id, create_time, update_time, summary, read_count, class_id, is_essence, 
+    is_top, is_delete
+  </sql>
+  <sql id="Base_Column_List1">
+    article.`title`,GET_USERNAME(article.`user_id`) AS user_name,GET_ARTICLE_DETAIL(article.`id`),article.`create_time`,article.`summary`,article.`read_count`,
+GET_CLASSIFY(article.`class_id`) AS class_name,article.`is_essence`,article.`is_top`,article_detail.`content`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from article
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectArticle"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article
+    order by is_top
+  </select>
+  <select id="selectArticleByParam" parameterType="com.lzl.blog.entity.vo.ArticleVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List1" />
+    from article,user_detail,article_detail
+    WHERE
+    article.`user_id`=user_detail.`user_id` AND article.`id`=article_detail.`article_id` AND article.`is_delete`=FALSE
+    <if test="id != null">
+        and article.`id`= #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="content != null">
+      and article_detail.`content`like concat('%',#{content,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="classId != null">
+      and article.`class_id`=#{class_id,jdbcType=VARCHAR}
+    </if>
+
+    ORDER BY article.`is_top` DESC,article.`update_time` DESC
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzl.blog.entity.Article">
+    insert into article (id, title, user_id, 
+      create_time, update_time, summary, 
+      read_count, class_id, is_essence, 
+      is_top, is_delete)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{summary,jdbcType=VARCHAR}, 
+      #{readCount,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{isEssence,jdbcType=BIT}, 
+      #{isTop,jdbcType=BIT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lzl.blog.entity.Article" >
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="readCount != null">
+        read_count,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="isEssence != null">
+        is_essence,
+      </if>
+      <if test="isTop != null">
+        is_top,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="readCount != null">
+        #{readCount,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="isEssence != null">
+        #{isEssence,jdbcType=BIT},
+      </if>
+      <if test="isTop != null">
+        #{isTop,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lzl.blog.entity.Article">
+    update article
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="readCount != null">
+        read_count = #{readCount,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="isEssence != null">
+        is_essence = #{isEssence,jdbcType=BIT},
+      </if>
+      <if test="isTop != null">
+        is_top = #{isTop,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lzl.blog.entity.Article">
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      summary = #{summary,jdbcType=VARCHAR},
+      read_count = #{readCount,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=INTEGER},
+      is_essence = #{isEssence,jdbcType=BIT},
+      is_top = #{isTop,jdbcType=BIT},
+      is_delete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

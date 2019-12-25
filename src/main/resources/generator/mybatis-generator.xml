@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    
+    <!--<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
+
+    <context id="default" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <commentGenerator type="com.lzl.blog.utiltool.MyCommentGenerator"/>
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1/t_blogs"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!--<javaTypeResolver >-->
+        <!--<property name="forceBigDecimals" value="false" />-->
+        <!--</javaTypeResolver>-->
+
+        <!--生成Model/DataObject类存放的位置-->
+        <javaModelGenerator targetPackage="com.lzl.blog.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+
+        <!--生成映射文件存放的位置-->
+       <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--生成Dao类存放的位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.lzl.blog.dao"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--生成对应表及类名-->
+        <!--<table tableName="article" domainObjectName="Article" enableCountByExample="false"
+        enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false"/>
+
+        <table tableName="article_poll" domainObjectName="ArticlePoll" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>-->
+
+        <table tableName="article_detail" domainObjectName="ArticleDetail" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <!--<table tableName="attach" domainObjectName="Attach" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="blog" domainObjectName="Blog" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="classfication" domainObjectName="ClassFication" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="comment" domainObjectName="Comment" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="comment_poll" domainObjectName="CommentPoll" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="log" domainObjectName="Log" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="tag" domainObjectName="Tag" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+       <table tableName="user_detail" domainObjectName="UserDetail" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>-->
+
+    </context>
+</generatorConfiguration>
