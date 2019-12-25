@@ -40,4 +40,32 @@ public class CommonUtil {
             throw new BusinessException(StatusEnum.INPUT_PARAMETER_INVALID);
         }
     }
+
+    public static boolean equals(ArticleVo articleVo,ArticleVo DBArticleVo){
+        if (null != articleVo.getEssence() && !DBArticleVo.getEssence().equals(articleVo.getEssence())){
+            return true;
+        }
+        if (null != articleVo.getContent() && !DBArticleVo.getContent().equals(articleVo.getContent()) && !"".equals(articleVo.getContent())){
+            return true;
+        }
+        if (null != articleVo.getSummary() && !DBArticleVo.getSummary().equals(articleVo.getSummary()) && !"".equals(articleVo.getSummary())) {
+            return true;
+        }
+        if (null != articleVo.getTitle() && !DBArticleVo.getTitle().equals(articleVo.getTitle()) && !"".equals(articleVo.getTitle())) {
+            return true;
+        }
+        if (null != articleVo.getClassId() && DBArticleVo.getClassId()!=(articleVo.getClassId())) {
+            return true;
+        }
+        if (null != articleVo.getIsTop() && DBArticleVo.getIsTop()!=(articleVo.getIsTop())) {
+            return true;
+        }
+        if (null != articleVo.getIsDelete() && DBArticleVo.getIsDelete()!=(articleVo.getIsDelete())) {
+            return true;
+        }
+        if (null != articleVo.getReadCount() && DBArticleVo.getReadCount()!=(articleVo.getReadCount())) {
+            return true;
+        }
+        return false;
+    }
 }

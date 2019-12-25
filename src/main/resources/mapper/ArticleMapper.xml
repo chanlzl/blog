@@ -26,7 +26,7 @@
     article.`title`,GET_USERNAME(article.`user_id`) AS user_name,GET_ARTICLE_DETAIL(article.`id`),article.`create_time`,article.`summary`,article.`read_count`,
 GET_CLASSIFY(article.`class_id`) AS class_name,article.`is_essence`,article.`is_top`,article_detail.`content`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from article

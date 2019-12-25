@@ -8,7 +8,7 @@ public class ArticleVo {
         /**
          * 文章主键
          */
-        private Integer id;
+        private String id;
 
         private String content;
 
@@ -76,7 +76,7 @@ public class ArticleVo {
          * 文章主键
          * @return id 文章主键
          */
-        public Integer getId() {
+        public String getId() {
             return id;
         }
 
@@ -84,7 +84,7 @@ public class ArticleVo {
          * 文章主键
          * @param id 文章主键
          */
-        public void setId(Integer id) {
+        public void setId(String id) {
             this.id = id;
         }
 

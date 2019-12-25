@@ -48,19 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
     public int publishArticle(ArticleVo articleVo) {
         int insert = 0;
         try {
-            Article article = new Article();
-            BeanUtils.copyProperties(articleVo,article);
-            if (StringUtils.isEmpty(articleVo.getClassName())){
-                article.setClassId(CodeConst.DEFAULT_CLASS);
-            }else{
-                ClassFication classFication = classFicationService.selectByParam(articleVo);
-                if (null == classFication){
-                    int classId = classFicationService.insertClass(articleVo);
-                    article.setClassId(classId);
-                }else{
-                    article.setClassId(classFication.getId());
-                }
-            }
+            Article article = addClass(articleVo);
             String articleId = CommonUtil.generateUUID();
             article.setId(articleId);
             articleMapper.insertSelective(article);
@@ -72,5 +60,46 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BusinessException(StatusEnum.UNKNOWN_ERROR);
         }
         return insert;
+    }
+
+    @Override
+    @Transactional
+    public void updateArticle(ArticleVo articleVo) {
+
+            ArticleVo articleVo1 = new ArticleVo();
+            articleVo1.setId(articleVo.getId());
+            List<ArticleVo> dbarticleVos = articleMapper.selectArticleByParam(articleVo1);
+            if (null == dbarticleVos || dbarticleVos.size()<1){
+                throw new BusinessException(StatusEnum.SEARCH_FAILED);
+            }
+            boolean flag = CommonUtil.equals(articleVo, dbarticleVos.get(0));
+            if (!flag){
+                throw new BusinessException(StatusEnum.ARTICLE_NO_CHANGE);
+            }
+            Article article = addClass(articleVo);
+            articleMapper.updateByPrimaryKeySelective(article);
+            if (null != articleVo.getContent() && !dbarticleVos.get(0).getContent().equals(articleVo.getContent()) && !"".equals(articleVo.getContent())){
+                ArticleDetail articleDetail = new ArticleDetail();
+                articleDetail.setContent(articleVo.getContent());
+                articleDetail.setArticleId(articleVo.getId());
+                articleDetailMapper.updateByPrimaryKeySelective(articleDetail);
+            }
+    }
+
+    private  Article addClass(ArticleVo articleVo){
+        Article article = new Article();
+        BeanUtils.copyProperties(articleVo,article);
+        if (StringUtils.isEmpty(articleVo.getClassName())){
+            article.setClassId(CodeConst.DEFAULT_CLASS);
+        }else{
+            ClassFication classFication = classFicationService.selectByParam(articleVo);
+            if (null == classFication){
+                int classId = classFicationService.insertClass(articleVo);
+                article.setClassId(classId);
+            }else{
+                article.setClassId(classFication.getId());
+            }
+        }
+        return article;
     }
 }

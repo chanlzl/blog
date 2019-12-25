@@ -10,5 +10,7 @@ public interface ArticleService {
 
     int publishArticle(ArticleVo articleVo);
 
+    void updateArticle(ArticleVo articleVo);
+
 
 }

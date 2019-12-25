@@ -83,7 +83,7 @@ public class ArticleController {
             throw new BusinessException(StatusEnum.INPUT_PARAMETER_INVALID);
         }
         CommonUtil.validateParams(articleVo);
-
-        return null;
+        articleService.updateArticle(articleVo);
+        return CommonResponse.Response(StatusEnum.SUCCESS);
     }
 }

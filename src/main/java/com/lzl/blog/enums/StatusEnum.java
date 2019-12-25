@@ -9,7 +9,11 @@ public enum  StatusEnum {
     USER_OR_PASSWORD_ERROR(10003,"用户已或密码错误"),
     USER_LOCKED(10004,"用户已锁定，请10分钟后登录"),
     UNKNOWN_ERROR(10005,"未知错误"),
-    DUPLICATE_ENTRY(10006,"主键重复")
+    DUPLICATE_ENTRY(10006,"主键重复"),
+    SEARCH_FAILED(10007,"查询博客失败"),
+    ARTICLE_NO_CHANGE(10008,"文章没有变化"),
+
+
     ;
 
     private int code;
